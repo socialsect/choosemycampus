@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply text-gray-900 bg-white font-sans antialiased; }
+  a { @apply no-underline; }
+}
+
+@layer components {
+  .container-site { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+}
+
+/* News ticker animation */
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track {
+  display: inline-flex;
+  animation: ticker-scroll 30s linear infinite;
+  will-change: transform;
+}
+.ticker-track:hover { animation-play-state: paused; }
