@@ -2,6 +2,18 @@
 
 import { useState } from 'react';
 
+// Logos that are too small/low-res and look blurry — skip image, use fallback
+const BAD_LOGOS = new Set([
+  '/colleges/flame-university.png',   // 16x16
+  '/colleges/simsree.png',            // 16x16
+  '/colleges/great-lakes-chennai.png', // 48x48
+  '/colleges/nmims-mumbai.png',       // 48x48
+  '/colleges/soil-gurgaon.png',       // 48x48
+  '/colleges/mdi-gurgaon.png',        // 64x64
+  '/colleges/ximb-bhubaneswar.png',   // 64x64
+  '/colleges/welingkar-mumbai.png',   // 100x100
+]);
+
 function initialsFromName(name) {
   const cleaned = name
     .replace(/\(.*?\)/g, '')
@@ -17,7 +29,7 @@ function initialsFromName(name) {
 export default function CollegeLogo({ college, className = '', imgClassName = '' }) {
   const [errored, setErrored] = useState(false);
   const src = college?.logo;
-  const showImage = src && !errored;
+  const showImage = src && !errored && !BAD_LOGOS.has(src);
 
   return (
     <div className={`relative overflow-hidden bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center ${className}`}>
@@ -31,10 +43,12 @@ export default function CollegeLogo({ college, className = '', imgClassName = ''
         />
       ) : (
         <div className="flex flex-col items-center justify-center p-4 text-center">
-          <span className="text-3xl md:text-4xl font-extrabold text-[#1B3A5B] tracking-tight">
-            {initialsFromName(college?.name || 'CM')}
-          </span>
-          <span className="mt-1 text-[10px] uppercase tracking-wider text-gray-500 font-semibold">
+          <div className="w-12 h-12 rounded-xl bg-[#1B3A5B] flex items-center justify-center mb-2">
+            <span className="text-lg font-extrabold text-white tracking-tight">
+              {initialsFromName(college?.name || 'CM')}
+            </span>
+          </div>
+          <span className="text-[11px] uppercase tracking-wider text-gray-500 font-semibold">
             {college?.city}
           </span>
         </div>
